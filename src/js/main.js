@@ -10,6 +10,7 @@ $(document).ready(function(){
   sudokus.push(testSudoku);
   console.log("I'm reading main!");
   console.log(testSudoku.squares);
+  console.log("Result of test on testSudoku: " + testSudoku.checkSelf()); 
 
 
   $("#produceBoard").click(function(){

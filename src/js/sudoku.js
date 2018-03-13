@@ -8,30 +8,42 @@ function checkRows(squares){
   for (var i = 0; i <= 8; i++){
     var startIndex = i * 9;
     var rowResult = 0;
+    var tempArray = [];
 
     for (var j = startIndex; j <= startIndex + 9; j ++){
       rowResult += mySquares[j];
+      if (tempArray.includes(mySquares[j])) {
+        return false;
+      } else {
+        if (mySquares[j] !== 0) tempArray.push(mySquares[j]);
+      };
     };
 
-    if (rowResult <= 45){
-      return true;
+    if (rowResult > 45){
+      return false;
     };
   };
-  return false;
+  return true;
 }
 
 function checkColumns(squares){
   let mySquares = squares;
   for (var i = 0; i <= 8; i++){
     var colResult = 0;
+    var tempArray = [];
     for (var j = i; j <= 81; j += 9){
       colResult += mySquares[j];
+      if (tempArray.includes(mySquares[j])) {
+        return false;
+      } else {
+        if (mySquares[j] !== 0) tempArray.push(mySquares[j]);
+      };
     };
-    if (colResult <= 45){
-      return true;
+    if (colResult > 45){
+      return false;
     };
   };
-  return false;
+  return true;
 }
 
 function checkBoxes(squares){
@@ -44,11 +56,11 @@ function checkBoxes(squares){
       boxTotal += mySquares[(startIndex+1)+(9*i)];
       boxTotal += mySquares[(startIndex+2)+(9*i)];
     };
-    if (boxTotal <= 45) {
-      return true;
+    if (boxTotal > 45) {
+      return false;
     };
   });
-  return false;
+  return true;
 }
 
 Sudoku.prototype.checkSelf = function() {

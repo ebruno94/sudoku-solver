@@ -14,10 +14,10 @@ function checkRows(squares){
     };
 
     if (rowResult <= 45){
-      return false;
+      return true;
     };
   };
-  return true;
+  return false;
 }
 
 function checkColumns(squares){
@@ -25,13 +25,13 @@ function checkColumns(squares){
   for (var i = 0; i <= 8; i++){
     var colResult = 0;
     for (var j = i; j <= 81; j += 9){
-      rowResult += mySquares[j];
+      colResult += mySquares[j];
     };
-    if (rowResult <= 45){
-      return false;
+    if (colResult <= 45){
+      return true;
     };
   };
-  return true;
+  return false;
 }
 
 function checkBoxes(squares){
@@ -45,19 +45,20 @@ function checkBoxes(squares){
       boxTotal += mySquares[(startIndex+2)+(9*i)];
     };
     if (boxTotal <= 45) {
-      return false;
+      return true;
     };
   });
-  return true;
+  return false;
 }
 
-Sudoku.prototype.checkSelf() {
+Sudoku.prototype.checkSelf = function() {
   return (checkRows(this.squares) && checkColumns(this.squares) && checkBoxes(this.squares));
 }
 
-Sudoku.protoype.solveSelf() {
+Sudoku.prototype.solveSelf = function() {
   var emptyIndices = [];
   let mySquares = this.squares;
+  let that = this;
   for (var i = 0; i <= this.squares.length; i++) {
     if (this.squares[i] === 0) {
       emptyIndices.push(i);
@@ -65,24 +66,36 @@ Sudoku.protoype.solveSelf() {
   };
 
   var placeNumber = function(currentIndex, i) {
+    let j = i;
     mySquares[emptyIndices[currentIndex]] = i;
-    if (!this.checkSelf()) {
-      if (i === 10) {
+    let bool = that.checkSelf();
+    if (!bool) {
+      if (i >= 10) {
         return false;
-      };
-      placeNumber(currentIndex, i++);
-    };
-    return true;
+      } else if (i < 10) {
+        j++;
+        placeNumber(currentIndex, j);
+      }
+    } else if (bool){
+      return true;
+    }
   };
 
   var backtrackNumbers = function() {
     let currentIndex = 0;
+    debugger;
     while (currentIndex <= emptyIndices.length) {
-      if (placeNumber(currentIndex,1)) {
-        placeNumber(currentIndex+1, 1);
-      } else {
-        placeNumber(currentIndex-1, mySquares[emptyIndices[currentIndex]]+1);
+      console.log(mySquares);
+      let bool = placeNumber(currentIndex,1);
+      if (bool) {
+        currentIndex++;
+        placeNumber(currentIndex, 1);
+      } else if (!bool) {
+        currentIndex--;
+        placeNumber(currentIndex, mySquares[emptyIndices[currentIndex]]+1);
       };
     };
+  };
+
   backtrackNumbers();
 }

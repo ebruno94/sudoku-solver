@@ -17,7 +17,7 @@ module.exports = {
     new UglifyJsPlugin( {sourceMap: true} ),
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'Journal',
+      title: 'Sudoku-Solver',
       template: './src/html/index.html',
       inject: 'body'
     })

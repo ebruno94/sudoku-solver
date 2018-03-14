@@ -10,12 +10,12 @@ function checkRows(squares){
     var rowResult = 0;
     var tempArray = [];
 
-    for (var j = startIndex; j <= startIndex + 9; j ++){
+    for (var j = startIndex; j <= startIndex + 8; j ++){
       rowResult += mySquares[j];
       if (tempArray.includes(mySquares[j])) {
         return false;
-      } else {
-        if (mySquares[j] !== 0) tempArray.push(mySquares[j]);
+      } else if (mySquares[j] !== 0){
+        tempArray.push(mySquares[j]);
       };
     };
 
@@ -35,8 +35,8 @@ function checkColumns(squares){
       colResult += mySquares[j];
       if (tempArray.includes(mySquares[j])) {
         return false;
-      } else {
-        if (mySquares[j] !== 0) tempArray.push(mySquares[j]);
+      } else if (mySquares[j] !== 0){
+        tempArray.push(mySquares[j]);
       };
     };
     if (colResult > 45){
@@ -71,22 +71,26 @@ Sudoku.prototype.solveSelf = function() {
   var emptyIndices = [];
   let mySquares = this.squares;
   let that = this;
-  for (var i = 0; i <= this.squares.length; i++) {
+  for (var i = 0; i < this.squares.length; i++) {
     if (this.squares[i] === 0) {
       emptyIndices.push(i);
     };
   };
+  console.log("These are your emptyIndices:");
+  console.log(emptyIndices);
 
   var placeNumber = function(currentIndex, i) {
     let j = i;
     mySquares[emptyIndices[currentIndex]] = i;
     let bool = that.checkSelf();
     if (!bool) {
-      if (i >= 10) {
+      if (i >= 9) {
+        console.log(mySquares);
+        mySquares[emptyIndices[currentIndex]] = 0;
         return false;
-      } else if (i < 10) {
+      } else if (i < 9) {
         j++;
-        placeNumber(currentIndex, j);
+        return placeNumber(currentIndex, j);
       }
     } else if (bool){
       return true;
@@ -95,16 +99,15 @@ Sudoku.prototype.solveSelf = function() {
 
   var backtrackNumbers = function() {
     let currentIndex = 0;
-    debugger;
-    while (currentIndex <= emptyIndices.length) {
-      console.log(mySquares);
-      let bool = placeNumber(currentIndex,1);
+    let startingInt = 1;
+    while (currentIndex < emptyIndices.length) {
+      let bool = placeNumber(currentIndex, startingInt);
       if (bool) {
         currentIndex++;
-        placeNumber(currentIndex, 1);
+        startingInt = 1;
       } else if (!bool) {
         currentIndex--;
-        placeNumber(currentIndex, mySquares[emptyIndices[currentIndex]]+1);
+        startingInt = mySquares[emptyIndices[currentIndex]]+1;
       };
     };
   };

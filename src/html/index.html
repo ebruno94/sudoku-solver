@@ -6,27 +6,45 @@
   </head>
   <body>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <button type="button" name="button" id="produceBoard">Create Sudoku Board!</button>
-          <button type="button" name="button" id="getFirstValue">Find Value!</button>
+    <div class="container jumbotron">
+      <h1>Sudoku Solver</h1>
+    </div>
+
+    <div id="main">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <button type="button" name="button" id="produceBoard">Create Sudoku Board!</button>
+          </div>
+          <div class="col-md-6">
+            <button type="button" name="button" id="playChosenBoard">Play Chosen Board!</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row" id="sudokuBoard">
+
+        </div>
+      </div>
+
+      <div class="container" id="arrayButtons">
+        <div class="row">
+          <div class="col-md-12">
+            <button type="button" name="button" id="boardToArray">Board To Array</button>
+            <button type="button" name="button" id="arrayToBoard">Array To Board</button>
+            <button type="button" name="button" id="solveBoard">Solve Board</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="container">
-      <div class="row" id="sudokuBoard">
-
-      </div>
-    </div>
-
-    <div class="container" id="arrayButtons">
-      <div class="row">
-        <div class="col-md-12">
-          <button type="button" name="button" id="boardToArray">Board To Array</button>
-          <button type="button" name="button" id="arrayToBoard">Array To Board</button>
-          <button type="button" name="button" id="solveBoard">Solve Board</button>
+    <div id="sidebar">
+      <div class="container">
+        <div class="row h2">
+          <div class="col-md-12">
+            <h2>My Sudokus</h2>
+          </div>
         </div>
       </div>
     </div>

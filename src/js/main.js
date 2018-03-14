@@ -6,17 +6,21 @@ import "../css/bootstrap.css";
 $(document).ready(function(){
   var sudokus = new Array();
   var testSudoku = new Sudoku();
+  var currentSudokuId = 0;
   testSudoku.squares = [0, 0, 0, 2, 6, 0, 7, 0, 1, 6, 8, 0, 0, 7, 0, 0, 9, 0, 1, 9, 0, 0, 0, 4, 5, 0, 0, 8, 2, 0, 1, 0, 0, 0, 4, 0, 0, 0, 4, 6, 0, 2, 9, 0, 0, 0, 5, 0, 0, 0, 3, 0, 2, 8, 0, 0, 9, 3, 0, 0, 0, 7, 4, 0, 4, 0, 0, 5, 0, 0, 3, 6, 7, 0, 3, 0, 1, 8, 0, 0, 0];
   var testSudoku2 = new Sudoku();
   testSudoku2.squares = [0, 4, 3, 2, 6, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 3, 0, 8, 9, 1, 0, 5, 0, 0, 0, 0, 3, 0, 6, 0, 0, 0, 0, 4, 4, 7, 0, 0, 1, 0, 0, 3, 8, 8, 0, 0, 0, 0, 4, 0, 7, 0, 0, 0, 0, 7, 0, 6, 1, 8, 0, 1, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 9, 1, 3, 2, 0];
+  var testSudoku3 = new Sudoku();
+  testSudoku3.squares = [0, 3, 0, 0, 0, 0, 9, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 1, 0, 3, 0, 0, 0, 0, 9, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 4, 0, 8, 0, 0, 7, 0, 0, 2, 0, 8, 5, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 7, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 1];
   sudokus.push(testSudoku);
   sudokus.push(testSudoku2);
+  sudokus.push(testSudoku3); 
   console.log("I'm reading main!");
   console.log(testSudoku.squares);
   console.log("Result of test on testSudoku: " + testSudoku.checkSelf());
 
   var listSudokus = function() {
-    // $("#sidebar .container *:not(.h2)").empty();
+    $("#sidebar .container .row:not(.h2)").remove();
     let boxHtml = '<div class="col-md-4 miniSudokuBox">' +
                     '<div class="row">' +
                       '<div class="col-md-4 miniSudokuSquare">' +
@@ -140,17 +144,18 @@ $(document).ready(function(){
     console.log(mySudoku.squares);
     console.log("Result of test on testSudoku: " + mySudoku.checkSelf())
     sudokus.push(mySudoku);
+    listSudokus();
   });
 
   $("#arrayToBoard").click(function() {
     for (var i = 0; i <= 80; i++) {
-      $("#s" + i + " input").val(sudokus[0].squares[i]);
+      $("#s" + i + " input").val(sudokus[currentSudokuId].squares[i]);
     };
     $("input[value='0']").val(" ").text(" ");
   })
 
   $("#solveBoard").click(function() {
-    sudokus[0].solveSelf();
+    sudokus[currentSudokuId].solveSelf();
   })
 
   $("#playChosenBoard").click(function() {
@@ -189,6 +194,7 @@ $(document).ready(function(){
                       '</div>' +
                     '</div>' +
                   '</div>';
+    $("#sudokuBoard").empty();
 
     for (var i = 0; i <= 8; i++) {
       $("#sudokuBoard").append(boxHtml);
@@ -203,9 +209,11 @@ $(document).ready(function(){
     };
 
     for (i = 0; i <= 80; i++) {
-      console.log($(".miniSudoku[class='sudokuSelected']"));
-      $("#s" + i + " input").val(sudokus[$(".miniSudoku[class='sudokuSelected']").index()].squares[i]);
+      console.log($(".miniSudoku[class='row miniSudoku sudokuSelected']").index());
+      $("#s" + i + " input").val(sudokus[$(".miniSudoku[class='row miniSudoku sudokuSelected']").index()-1].squares[i]);
     };
+
+    currentSudokuId = $(".miniSudoku[class='row miniSudoku sudokuSelected']").index() - 1;
 
 
   })

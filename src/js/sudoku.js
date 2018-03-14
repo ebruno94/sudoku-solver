@@ -49,17 +49,33 @@ function checkColumns(squares){
 function checkBoxes(squares){
   let mySquares = squares;
   let myIndices = [0, 3, 6, 27, 30, 33, 54, 57, 60];
-  myIndices.forEach(function(startIndex) {
+  for (let a = 0; a < myIndices.length; a++){
     let boxTotal = 0;
+    let tempArray = [];
     for (var i = 0; i <= 2; i++) {
-      boxTotal += mySquares[startIndex+(9*i)];
-      boxTotal += mySquares[(startIndex+1)+(9*i)];
-      boxTotal += mySquares[(startIndex+2)+(9*i)];
+      boxTotal += mySquares[myIndices[a]+(9*i)];
+      if (tempArray.includes(mySquares[myIndices[a]+(9*i)])){
+        return false;
+      } else if ((mySquares[myIndices[a]+(9*i)]) !== 0){
+        tempArray.push(mySquares[myIndices[a]+(9*i)]);
+      };
+      boxTotal += mySquares[(myIndices[a]+1)+(9*i)];
+      if (tempArray.includes(mySquares[(myIndices[a]+1)+(9*i)])){
+        return false;
+      } else if ((mySquares[myIndices[a]+(9*i)]) !== 0){
+        tempArray.push(mySquares[myIndices[a]+(9*i)]);
+      };
+      boxTotal += mySquares[(myIndices[a]+2)+(9*i)];
+      if (tempArray.includes(mySquares[(myIndices[a]+2)+(9*i)])){
+        return false;
+      } else if ((mySquares[myIndices[a]+(9*i)]) !== 0){
+        tempArray.push(mySquares[myIndices[a]+(9*i)]);
+      };
     };
     if (boxTotal > 45) {
       return false;
     };
-  });
+  };
   return true;
 }
 
@@ -76,8 +92,6 @@ Sudoku.prototype.solveSelf = function() {
       emptyIndices.push(i);
     };
   };
-  console.log("These are your emptyIndices:");
-  console.log(emptyIndices);
 
   var placeNumber = function(currentIndex, i) {
     let j = i;
@@ -85,7 +99,6 @@ Sudoku.prototype.solveSelf = function() {
     let bool = that.checkSelf();
     if (!bool) {
       if (i >= 9) {
-        console.log(mySquares);
         mySquares[emptyIndices[currentIndex]] = 0;
         return false;
       } else if (i < 9) {
@@ -100,6 +113,8 @@ Sudoku.prototype.solveSelf = function() {
   var backtrackNumbers = function() {
     let currentIndex = 0;
     let startingInt = 1;
+    console.log("backtracking ..."); 
+    console.log(mySquares);
     while (currentIndex < emptyIndices.length) {
       let bool = placeNumber(currentIndex, startingInt);
       if (bool) {

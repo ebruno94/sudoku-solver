@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 export function Sudoku(){
   this.squares = new Array(81);
   this.squares.fill(0);
@@ -95,6 +97,10 @@ Sudoku.prototype.solveSelf = function() {
 
   var placeNumber = function(currentIndex, i) {
     let j = i;
+    if (i === 10) {
+      mySquares[emptyIndices[currentIndex]] = 0;
+      return false;
+    };
     mySquares[emptyIndices[currentIndex]] = i;
     let bool = that.checkSelf();
     if (!bool) {
@@ -113,8 +119,7 @@ Sudoku.prototype.solveSelf = function() {
   var backtrackNumbers = function() {
     let currentIndex = 0;
     let startingInt = 1;
-    console.log("backtracking ..."); 
-    console.log(mySquares);
+    console.log("backtracking ...");
     while (currentIndex < emptyIndices.length) {
       let bool = placeNumber(currentIndex, startingInt);
       if (bool) {
